@@ -31,6 +31,7 @@ exports.login = async(req, res, next) => {
                 if (! valid) return res.status(404).json({ error: 'Email ou password incorrect' });
                 res.status(200).json({
                     userId: user.id,
+                    role: user.role,
                     token: jwt.sign(
                         { userId: user.id},
                         'RANDOM_TOKEN_SECRET',

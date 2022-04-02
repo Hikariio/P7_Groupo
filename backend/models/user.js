@@ -44,6 +44,11 @@ module.exports = (sequelize, DataTypes) => {
                   notEmpty: {msg: "Un mot de passe doit être rempli"},
               }
           },
+          role: {
+              type: DataTypes.STRING,
+              allowNull: false,
+              defaultValue: "member",
+          },
     });
 }
-    
+

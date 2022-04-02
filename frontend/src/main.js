@@ -10,7 +10,5 @@ createApp(App)
   .use(store)
   .component("font-awesome-icon", FontAwesomeIcon)
   .mount("#app");
-  
-  
-  createApp(App).use(router).mount('#app')
+
   

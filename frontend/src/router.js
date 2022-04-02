@@ -49,39 +49,10 @@ const routes = [
     // lazy-loaded
     component: BoardUser,
   },
-  {
-    path: "/",
-    alias: "/tutorials",
-    name: "tutorials",
-    component: () => import("./components/TutorialsList")
-  },
-  {
-    path: "/tutorials/:id",
-    name: "tutorial-details",
-    component: () => import("./components/BoardTutorial")
-  },
-  {
-    path: "/add",
-    name: "add",
-    component: () => import("./components/AddTutorial")
-  },
 ];
 const router = createRouter({
   history: createWebHistory(),
   routes,
 });
 export default router;
-
-router.beforeEach((to, from, next) => {
-    const publicPages = ['/login', '/register', '/home'];
-    const authRequired = !publicPages.includes(to.path);
-    const loggedIn = localStorage.getItem('user');
-    // trying to access a restricted page + not logged in
-    // redirect to login page
-    if (authRequired && !loggedIn) {
-      next('/login');
-    } else {
-      next();
-    }
-  });
 
