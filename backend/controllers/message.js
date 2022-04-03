@@ -1,104 +1,125 @@
 const Message = require('../models/message');
-const fs = require('fs');
-const { json } = require('express');
+const Avis = require('../models/avis');
 const Commentaire = require('../models/commentaire');
 const sequelize = require('../models/config');
-const Avis = require('../models/avis');
 
 exports.getAllMessage = (req, res, next) => {
-    Message.find()
-        .then(message => res.status(200).json(message))
-        .catch(error => res.status(400).json({ error }));
-}
+    Message.findAll({
+         order: [['date_creation', 'DESC']]
+    })
+    .then(message => {
+        res.status(201).json(message)
+    })
+    .catch(error => {
+        res.status(500).json({ error })
+    })
+};
 
 exports.getOneMessage = (req, res, next) => {
-    Message.findOne({ _id: req.params.id })
-        .then(Messages => res.status(200).json(Messages))
-        .catch(error => res.status(400).json({ error }));
-}
+    Message.findAll({
+        where: {
+            id: req.body.id
+        }
+    })
+    .then(message => {
+        res.status(201).json(message)
+    })
+    .catch(error => {
+        res.status(500).json({ error })
+    })
+};
 
 exports.createMessage = (req, res, next) => {
-    const MessageObject = JSON.parse(req.body.Message);
-    const Message = new Message({
-        ...MessageObject,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-    })
-    Message.save()
-        .then(() => res.status(201).json({ message: 'Nouveaux Message créé !' }))
-        .catch(error => res.status(400).json({ error }))
-}
-
-exports.updateMessage = (req, res, next) => {
-    const MessageObject = req.file ?
-        {
-            ...JSON.parse(req.body.Message),
-            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-        } : { ...req.body };
-
-    if (req.file) {
-        Message.findOne({ _id: req.params.id })
-            .then(Message => {
-                const filename = Message.imageUrl.split('/images/')[1];
-                fs.unlink(`images/${filename}`, (err => {
-                    if (err) console.log(err);
-                    else {
-                        console.log("\nDeleted file");
-                    }
-                }));
-            })
-            .catch(error => res.status(400).json({ error }))
-    }
-
-    Message.updateOne({ _id: req.params.id }, { ...messageObject, _id: req.params.id })
-        .then(() => res.status(200).json({ message: 'Message modifié !' }))
-        .catch(error => res.status(400).json({ error }));
-}
+    const messageObject = JSON.parse(req.body.donnee);
+    const message = Message.build({contenu: messageObject.contenu, author: messageObject.author, img_url: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`});
+    message.save();
+    res.status(201).json({message: 'Message créé'});
+};
 
 exports.deleteMessage = (req, res, next) => {
-    Message.findOne({ _id: req.params.id })
-        .then(Message => {
-            const filename = Message.imageUrl.split('/images/')[1];
-            fs.unlink(`images/${filename}`, () => {
-                Message.deleteOne({ _id: req.params.id })
-                    .then(() => next())
-                    .catch(error => res.status(400).json({ error }));
-            })
-            res.status(200).json({ message: 'Message supprimé'});
+    Avis.destroy({
+        where: {
+            message_principale: req.params.id
+        }
+    })
+    .then(() => { 
+        Commentaire.destroy({
+            where: {
+                message_principale: req.params.id
+            }
         })
-        .catch(error => res.status(400).json({ error }))
-}
+        .then(() => {
+            Message.destroy({
+                where: {
+                    id: req.params.id
+                }
+            })
+            .then(() => {
+                res.status(201).json({message: 'Message supprimé'})
+            })
+        })
+    })
+    .catch(error => {
+        res.status(500).json({ error })
+    })
+};
 
+exports.updateMessage = (req, res, next) => {
+    Message.update({contenu: contenu, author: author, img_url: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`},{
+        where: {
+            id: req.body.id
+        },
+        returning: true
+    })
+    .then(() => res.status(201).json({message: 'Message mise a jour'}))
+    .catch(error => {
+        res.status(500).json({ error })
+    })
+};
 exports.likeMessage = (req, res, next) => {
-    const like = req.body.like
-    const MessageId = req.params.id
-    const userId = req.body.userId
-
-    switch(like){
-        case 1 :
-             Message.updateOne({ _id: MessageId }, { $push: { usersLiked: userId }, $inc: { likes: +1 }})
-                .then(() => res.status(200).json({ message: `J'aime` }))
-                .catch((error) => res.status(400).json({ error })) 
-            break;
-        case -1 :
-             Message.updateOne({ _id: MessageId }, { $push: { usersDisliked: userId }, $inc: { dislikes: +1 }})
-                .then(() => res.status(200).json({ message: `Je n'aime pas` }))
-                .catch((error) => res.status(400).json({ error })) 
-            break;  
-        default :
-             Message.findOne({ _id: req.params.id })
-                .then(Message =>{
-                    if (Message.usersLiked.includes(userId)){
-                        Message.updateOne({ _id: MessageId }, { $pull: { usersLiked: userId }, $inc: { likes: -1 }})
-                        .then(() => res.status(200).json({ message: `Le like a été supprimé` }))
-                        .catch((error) => res.status(400).json({ error })) 
-                    }
-                    else if(Message.usersDisliked.includes(userId)){
-                        Message.updateOne({ _id: MessageId }, { $pull: { usersDisliked: userId }, $inc: { dislikes: -1 }})
-                        .then(() => res.status(200).json({ message: `Le dislike a été supprimé` }))
-                         .catch((error) => res.status(400).json({ error }))   
-                    }
-                })
-            break;    
-    }
-}
-
+    Avis.findAll({
+        where: {
+            message_principale: req.body.message_principale,
+            author: req.body.author
+        }
+    })
+    .then(async value => {
+        // Si utilisateur n'a jamais like ou dislike
+        if(value == ''){
+            const avis = await Avis.build({author: req.body.author, message_principale: req.body.message_principale, avis: req.body.avis});
+            avis.save();
+        } else {
+            await Avis.update({avis: req.body.avis},{
+                where: {
+                    message_principale: req.body.message_principale,
+                    author: req.body.author
+                }
+            })
+        }
+        
+        // Mise a jour du nombre de like
+        const like = await Avis.count({
+            where: {
+                message_principale: req.body.message_principale,
+                avis: 1
+            }
+        })
+        // Mise a jour du nombre de dislike
+        const dislike = await Avis.count({
+            where: {
+                message_principale: req.body.message_principale,
+                avis: 2
+            },
+        })
+        console.log(like);
+        console.log(dislike);
+        await Message.update({like: like, dislike: dislike},{
+            where: {
+                id: req.body.message_principale
+            }
+        })
+    })
+    .then(() => {
+        res.status(201).json({message: "Avis bien mis a jour"});
+    })
+};

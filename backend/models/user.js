@@ -1,54 +1,29 @@
-// const User = function (user) {
-//     this.id = user.id;
-//     this.lastname = user.lastname;
-//     this.firstname = user.firstname;
-//     this.email = user.email;
-//     this.password = user.password;
-//     this.isAdmin = user.isAdmin || 0;
-// };
- 
-
-// module.exports = User;
+const { Sequelize, DataTypes } = require("sequelize");
+const sequelize = require('./config');
 
 
+const Users = sequelize.define("Users", {
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+    allowNull: false
+  },
+  name: {
+    type: DataTypes.TEXT
+  },
+  email: {
+    type: DataTypes.TEXT,
+    unique: true
+  },
+  password: {
+    type: DataTypes.TEXT,
+  },
+  role: {
+    type: DataTypes.TEXT,
+    defaultValue: 'membre' 
+  }
+},{timestamps:false});
 
-module.exports = (sequelize, DataTypes) => {
-    return sequelize.define('Users',{
-        id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true,
-            allowNull: false
-          },
-          firstname: {
-              type: DataTypes.STRING,
-          },
-          lastname: {
-              type: DataTypes.STRING,
-          },
-          email: {
-              type: DataTypes.STRING,
-                  allowNull: false,
-                  unique : {
-                      msg : 'L\'email est déjà pris.'
-                  },
-                  validate: {
-                      isEmail: {msg: "Choisir un email valide"}
-                  }
-          },
-          password: {
-              type: DataTypes.STRING,
-              allowNull: false,
-              validate : {
-                  notNull : {msg: "Un mot de passe est requis pour s'inscrire"},
-                  notEmpty: {msg: "Un mot de passe doit être rempli"},
-              }
-          },
-          role: {
-              type: DataTypes.STRING,
-              allowNull: false,
-              defaultValue: "member",
-          },
-    });
-}
-
+// Users.sync({alter: true});
+module.exports = Users;

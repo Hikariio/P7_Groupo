@@ -33,7 +33,7 @@ const Commentaire = sequelize.define("Commentaires", {
       type: DataTypes.DATE,
       defaultValue: Sequelize.NOW
     },
-},{timestamps:false});
+  },{timestamps:false});
   
-Commentaire.sync({alter: true});
-module.exports = Commentaire;
+  // Commentaire.sync({alter: true});
+  module.exports = Commentaire;

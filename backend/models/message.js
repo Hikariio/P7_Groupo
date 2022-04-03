@@ -35,7 +35,7 @@ const Message = sequelize.define("Messages", {
       type: DataTypes.DATE,
       defaultValue: Sequelize.NOW
     }
-},{timestamps:false});
- 
-Message.sync({alter: true});
-module.exports = Message;
+  },{timestamps:false});
+  
+  // Message.sync({alter: true});
+  module.exports = Message;

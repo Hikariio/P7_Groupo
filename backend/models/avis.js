@@ -29,7 +29,7 @@ const Avis = sequelize.define("Avis", {
         },
         onDelete: 'CASCADE',
     },
-},{timestamps:false});
+  },{timestamps:false});
   
-Avis.sync({alter: true});
-module.exports = Avis;
+  // Avis.sync({alter: true});
+  module.exports = Avis;
