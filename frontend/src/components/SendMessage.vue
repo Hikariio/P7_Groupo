@@ -72,9 +72,9 @@ export default({
                         },
                         body: JSON.stringify(donnee),
                     })
-                    // .then(() =>{
-                    //     location.reload();
-                    // })
+                    .then(() =>{
+                        location.reload();
+                    })
                     .catch(error => alert(error))
                 }
             } else {
