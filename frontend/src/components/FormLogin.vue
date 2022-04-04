@@ -56,19 +56,16 @@ export default ({
                     localStorage.setItem('token', value.token);
                     localStorage.setItem('user', value.userId);
                     localStorage.setItem('role', value.role);
-                    // this.$router.push({ path: '/Main'})
+                    this.$router.push({ path: '/Main'})
                 })
                 .catch()
             } else{
                 alert(this.errors[0])
             }
         },
-        // goMainPage: function(){
-        //     this.$router.push({ path: '/Main'})
-        // },
-        // retourHome: function(){
-        //     this.$router.push({ path: '/'})
-        // }
+        retourHome: function(){
+            this.$router.push({ path: '/'})
+        }
     }
 })
 </script>

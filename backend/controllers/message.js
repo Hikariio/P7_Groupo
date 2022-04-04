@@ -30,10 +30,17 @@ exports.getOneMessage = (req, res, next) => {
 };
 
 exports.createMessage = (req, res, next) => {
+    console.log(req.file);
+    if(req.file == null){
+        const messageObject = JSON.parse(req.body.donnee);
+        const message = Message.build({contenu: messageObject.contenu, author: messageObject.author, img_url:null});
+        message.save();
+        res.status(201).json({message:'Message créé'});
+    }
     const messageObject = JSON.parse(req.body.donnee);
     const message = Message.build({contenu: messageObject.contenu, author: messageObject.author, img_url: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`});
     message.save();
-    res.status(201).json({message: 'Message créé'});
+    res.status(201).json({message:'Message créé'});
 };
 
 exports.deleteMessage = (req, res, next) => {

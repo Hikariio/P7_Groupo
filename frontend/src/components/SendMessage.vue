@@ -62,15 +62,18 @@ export default({
                     })
                     .catch(error => alert(error))
                 } else {
-                    donnee = {contenu: this.contenu, author: localStorage.getItem('user')}; 
+                    donnee = {contenu: this.contenu, author: localStorage.getItem('user')};
+                    let fd = new FormData();
+                    fd.append('donnee', JSON.stringify(donnee)); 
+                    fd.append('image', '');
+                    console.log(donnee);
                     fetch('http://localhost:3000/api/message/', { 
                         method: 'POST',
                         headers:{
-                            'Accept': 'application/json', 
-                            'Content-Type': 'application/json',
+                            'Accept': 'multipart/form-data', 
                             'Authorization': 'Bearer ' + token
                         },
-                        body: JSON.stringify(donnee),
+                        body: fd,
                     })
                     .then(() =>{
                         location.reload();

@@ -53,7 +53,7 @@ export default ({
             if(this.passwordChk != this.password){
                 this.errors.push('Les mots de passe ne correspond pas');
             }
-            // this.$router.push({ path: '/login'})   
+            this.$router.push({ path: '/login'})   
         },
         sendForm: function(){
             fetch('http://localhost:3000/api/auth/signup',{
@@ -66,9 +66,9 @@ export default ({
             })
             .then(donnee => console.log(donnee))
         },
-        // retourHome: function(){
-        //     this.$router.push({ path: '/'})
-        // }
+        retourHome: function(){
+            this.$router.push({ path: '/'})
+        }
     }
 })
 </script>
