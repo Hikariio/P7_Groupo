@@ -2,8 +2,8 @@
     <div>
        <Header/>
        <div>
-            <button @click="suppr">Yes</button>
-            <button @click="returnMain">No</button>
+            <button @click="suppr">supprimer</button>
+            <button @click="returnMain">Non</button>
        </div>
     </div>
 </template>
@@ -41,6 +41,27 @@ export default ({
 })
 </script>
 
-<style>
-    
+<style scoped>
+p{
+    color: white
+}
+button{
+    border: 1px solid rgb(129, 23, 64);
+    background-color: #555454;
+    color: rgb(129, 23, 64);
+    width: 75px;
+    height: 50px;
+    border-radius: 15px;
+    margin: 0 30px;
+}
+/*=============================================
+                    TABLET
+=============================================*/
+@media only screen and (min-width : 768px) {
+}
+/*=============================================
+                    DESKTOP
+=============================================*/
+@media only screen and (min-width : 1224px) {
+}
 </style>

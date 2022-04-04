@@ -88,22 +88,22 @@ export default({
 })
 </script>
 
-<style scoped>
+<style>
 .conteneur_sendMessage{
     width: 90%;
     margin: 10px auto 0 auto;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     border-radius: 10px;
-    border: 1px solid orange;
+    border: 1px solid rgb(105, 4, 26);
     color: white;
     font-weight: bold;
-    background-color: rgb(102, 101, 101);
+    background-color: rgb(65, 63, 63);
 }
 .conteneur_texte_send{
     display: flex;
     justify-content: center;
     align-items: center;
-    border-top: 1px solid orange;
+    border-top: 1px solid rgb(92, 3, 29);
     height: 140px;
 }
 textarea{
@@ -120,7 +120,7 @@ textarea{
     width: 100%;
     margin-top: 5px;
     align-items: center;
-    border-top: 1px solid orange;
+    border-top: 1px solid rgb(119, 7, 50);
 }
 .conteneur_envoie:last-child{
     justify-self: flex-end;
@@ -130,8 +130,8 @@ textarea{
     flex-direction: column;
 }
 .btn{
-    background-color: #555454;
-    border: 1px solid orange;
+    background-color: #aaa0a0;
+    border: 1px solid rgb(99, 5, 36);
     width: 45%;
     margin: 20px auto;
     height: 35px;
@@ -140,7 +140,7 @@ textarea{
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    color: orange;
+    color: rgb(155, 11, 35);
     cursor: pointer;
 }
 .btn:hover{

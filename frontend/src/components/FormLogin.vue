@@ -92,9 +92,9 @@ input{
     padding-left: 10px;
 }
 button{
-    border: 1px solid orange;
-    background-color: #555454;
-    color: orange;
+    border: 1px solid rgb(129, 23, 64);
+    background-color: #585656;
+    color: rgb(160, 19, 26);
     width: 220px;
     height: 60px;
     border-radius: 15px;

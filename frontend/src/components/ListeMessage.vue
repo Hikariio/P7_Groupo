@@ -53,7 +53,9 @@ export default( {
         tableauMessage[11] = document.createElement("img");
         tableauMessage[2].appendChild(tableauMessage[11]);
         tableauMessage[11].setAttribute("src", donnee["img_url"]);
+        tableauMessage[2].classList.add('conteneur_image')
       }
+      
       tableauMessage[3] = document.createElement("div"); // text
       tableauMessage[4] = document.createElement("div"); // like/ dislike
       tableauMessage[5] = document.createElement("div"); // commentaire
@@ -102,10 +104,8 @@ export default( {
         tableauMessage[10].value = "X";
         tableauMessage[10].onclick = this.deleteMessage;
       }
-        
-
-      tableauMessage[11] = document.createElement("p");
-      tableauMessage[5].appendChild(tableauMessage[11]);
+      
+      
       this.recupCom(donnee['id'],tableauMessage[5]);
 
       tableauMessage[12] = document.createElement("div") // parent btn like
@@ -152,7 +152,10 @@ export default( {
       tableauMessage[16].classList.add('like_vide')
       tableauMessage[18].classList.add('like_plein')
 
-      tableauMessage[0].classList.add('conteneur_parent')
+      tableauMessage[0].classList.add('conteneur_message')
+      tableauMessage[1].classList.add('conteneur_texte')
+      tableauMessage[3].classList.add('conteneur_contenu')
+      tableauMessage[4].classList.add('conteneur_avis')
 
 
 
@@ -304,9 +307,120 @@ export default( {
 
 
 <style>
+    .conteneur_message{
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 90%;
+        margin: 30px auto;
+        border: 1px solid rgb(129, 23, 64);
+        border-radius: 15px;
+        color: white;
+        box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+        background-color: rgb(102, 101, 101);
+    }
+    
+    /* Titre + bouton suppr */
+    .conteneur_texte{
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid rgb(129, 23, 64);
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+    .conteneur_texte p{
+        width: 20%;
+        margin-left: 10px;
+    }
+    .conteneur_texte input{
+        position: absolute;
+        border-radius: 15px;
+        height: 30px;
+        width: 30px;
+        margin: auto 10px;
+        background-color: #5f5d5d;
+        border: 1px solid rgb(165, 10, 69);
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+        color: rgb(184, 168, 174);
+        top: 2%;
+        right: 1%;
+    }
+    .conteneur_texte input:hover{
+        font-weight: bold;
+        color: rgb(168, 24, 24);
+        border-color: red;
+    }
+    /* IMAGE GESTION */
+    .conteneur_image{
+        height: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        border-bottom: 1px solid rgb(129, 23, 64);
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+    .conteneur_image img{
+        min-width: 100%;
+        min-height: 100%;
+    }
+    /* Avis */
+    .conteneur_avis {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        height: 35px;   
+    }
+    .conteneur_avis div{
+        cursor: pointer;
+        height: 100%;
+        width: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgb(129, 23, 64);
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+    }
+    .dislikes{
+        position: relative;
+    }
+    .dislikes:hover{
+        color: rgb(121, 19, 19);
+    }
+    .likes{
+        position: relative;
+    }
+    .likes:hover{
+        color: rgb(114, 161, 59);
+    }
+    .conteneur_avis svg{
+        position: absolute;
+    }
+    .fa-thumbs-up{
+        right: 55%;
+    }
+    .fa-thumbs-down{
+        right: 55%;
+    }
+    .invisible{
+        opacity: 0;
+    }
+    /* Texte */
+    .conteneur_contenu{
+        display: flex;
+        justify-content: flex-start;
+        border-bottom: 1px solid rgb(129, 23, 64);
+    }
+    .conteneur_contenu p {
+        margin-left: 5px;
+    }
+    /*-----------------------------------------------
+                    Commentaire 
+    ------------------------------------------------*/
     .commentaire{
-        border: 1px solid rgb(18, 184, 93);
-        box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(18, 196, 71, 0.23) 0px 6px 6px;
+        border: 1px solid rgb(129, 23, 64);
+        box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
         border-radius: 5px;
         width: 90%;
         margin: 10px auto;
@@ -316,29 +430,56 @@ export default( {
         padding: 10px;
     }
     .commentaire div{
-        border-bottom: 1px solid orange;
+        border-bottom: 1px solid rgb(129, 23, 64);
         width: 100%;
         display: flex;
     }
     .commentaire div p{
         margin: 10px 0;
     }
-    .like{
-      cursor: pointer;
+    /*-----------------------------------
+                    SAISIE
+    -----------------------------------*/
+    .conteneur_saisie{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 20px 0;
+        height: 40px;
     }
-    .like_vide{
-      display: none;
+    .zoneSaisie_commentaire{
+        border: 1px solid rgb(129, 23, 64);
+        height: 95%;
+        border-top-left-radius: 15px;
+        border-bottom-left-radius: 15px;
+        width: 82%;
+        padding-left: 10px;
     }
-    .like_plein{
-      border: 1px solid red;
+    .btn_commentaire{
+        color: rgb(129, 23, 64);
+        border-top-right-radius: 15px;
+        border-bottom-right-radius: 15px;
+        height: 100%;
+        border: 1px solid rgb(129, 23, 64);
+        background-color: #555454;
+        font-size: 1.5em;
     }
-    .conteneur_parent{
-      display: flex;
+    .btn_commentaire:hover{
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        font-weight: bold;
     }
-    #acceuilMessage{
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      margin: 20%;
+    /*=============================================
+                        TABLET
+    =============================================*/
+    @media only screen and (min-width : 768px) {
+          #acceuilMessage{
+            max-width: 850px;
+            margin: 0 auto;
+        }
+    }
+    /*=============================================
+                        DESKTOP
+    =============================================*/
+    @media only screen and (min-width : 1224px) {
     }
 </style>

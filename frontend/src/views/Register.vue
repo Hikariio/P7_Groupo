@@ -17,7 +17,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 /*  MOBILE */
 .conteneur_globale{
     display: flex;
