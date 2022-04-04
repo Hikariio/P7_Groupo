@@ -132,10 +132,27 @@ export default( {
       tableauMessage[12].classList.add('likes');
       tableauMessage[13].classList.add('dislikes');
 
+      tableauMessage[16].classList.add('fa-thumbs-up')
+      tableauMessage[16].classList.add('far') // like vide (icon)
+      tableauMessage[17].classList.add("far")
+      tableauMessage[17].classList.add("fa-thumbs-down")  // dislike vide
+      tableauMessage[18].classList.add("fa-thumbs-up")
+      tableauMessage[18].classList.add("fas") // like rempli
+      tableauMessage[19].classList.add("fa-thumbs-down")
+      tableauMessage[19].classList.add("fas")  // dislike rempli
+
+      tableauMessage[14].innerText = donnee['like']
+      tableauMessage[15].innerText = donnee['dislike']   
+
+      tableauMessage[12].onclick = this.sendAvis
+      tableauMessage[13].onclick = this.sendAvis
+
       
       tableauMessage[0].id = donnee['id'];
+      tableauMessage[16].classList.add('like_vide')
+      tableauMessage[18].classList.add('like_plein')
 
-
+      tableauMessage[0].classList.add('conteneur_parent')
 
 
 
@@ -232,23 +249,24 @@ export default( {
       .catch(error => {error});
     },
     sendAvis: function(e){
-      let idMessage;
+      let idMess;
       let avis = 0;
       if(e.target.tagName.toLowerCase() === "div"){
-        idMessage = e.target.parentNode.parentNode.id;
+        idMess = e.target.parentNode.parentNode.id;
         avis = e.target;
       } else if(e.target.tagName.toLowerCase() === "p"){
-         idMessage = e.target.parentNode.parentNode.parentNode.id;
+         idMess = e.target.parentNode.parentNode.parentNode.id;
          avis = e.target.parentNode;
       }else{
-        idMessage = e.target.parentNode.parentNode.parentNode.parentNode.id;
-        avis = e.target.parentNode.parentNode;
+        idMess = e.target.parentNode.parentNode.parentNode.id;
+        avis = e.target.parentNode;
       }
       if(avis.className === "likes"){
         avis = 1;
       }else{
         avis = 2;
       }
+      console.log(avis,idMess)
       fetch("http://localhost:3000/api/message/like/",{
         method:'POST' ,
         headers:{
@@ -256,7 +274,7 @@ export default( {
           "Content-Type": "application/json",
           'Authorization': "Bearer " + this.token,
         },
-        body: JSON.stringify({message_principale: idMessage, author: this.user, avis: avis})
+        body: JSON.stringify({message_principale: idMess, author: this.user, avis: avis})
     }).then(() =>{
       this.refPage();
     }).catch(error => {error});
@@ -287,8 +305,8 @@ export default( {
 
 <style>
     .commentaire{
-        border: 1px solid orange;
-        box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+        border: 1px solid rgb(18, 184, 93);
+        box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(18, 196, 71, 0.23) 0px 6px 6px;
         border-radius: 5px;
         width: 90%;
         margin: 10px auto;
@@ -304,5 +322,23 @@ export default( {
     }
     .commentaire div p{
         margin: 10px 0;
+    }
+    .like{
+      cursor: pointer;
+    }
+    .like_vide{
+      display: none;
+    }
+    .like_plein{
+      border: 1px solid red;
+    }
+    .conteneur_parent{
+      display: flex;
+    }
+    #acceuilMessage{
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      margin: 20%;
     }
 </style>
