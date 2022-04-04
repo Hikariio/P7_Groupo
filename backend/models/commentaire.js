@@ -35,5 +35,5 @@ const Commentaire = sequelize.define("Commentaires", {
     },
   },{timestamps:false});
   
-  // Commentaire.sync({alter: true});
+  Commentaire.sync({alter: true});
   module.exports = Commentaire;

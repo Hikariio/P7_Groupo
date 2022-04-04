@@ -13,7 +13,7 @@ const Users = sequelize.define("Users", {
     type: DataTypes.TEXT
   },
   email: {
-    type: DataTypes.TEXT,
+    type: DataTypes.STRING(100),
     unique: true
   },
   password: {
@@ -25,5 +25,5 @@ const Users = sequelize.define("Users", {
   }
 },{timestamps:false});
 
-// Users.sync({alter: true});
+Users.sync({alter: true});
 module.exports = Users;

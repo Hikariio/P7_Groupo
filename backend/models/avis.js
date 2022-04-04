@@ -31,5 +31,5 @@ const Avis = sequelize.define("Avis", {
     },
   },{timestamps:false});
   
-  // Avis.sync({alter: true});
+  Avis.sync({alter: true});
   module.exports = Avis;
